@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-svc
+  namespace: contract-app
+  labels:
+    app: gateway
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 8080
+      nodePort: 30090
+      protocol: TCP
+  selector:
+    app: gateway
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  namespace: contract-app
+  labels:
+    app: gateway
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: gateway
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: mnikolopoulou/gateway
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: ACCOUNT_URL
+              value: "http://account-svc.contract-app.svc.cluster.local"
+            - name: APPLICATION_URL
+              value: "http://application-svc.contract-app.svc.cluster.local"
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: JWT_SECRET_KEY
+                  name: gateway-secret
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 10
+            failureThreshold: 2
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            failureThreshold: 2
+            timeoutSeconds: 10
+            successThreshold: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 600Mi
+            requests:
+              cpu: 400m
+              memory: 500Mi
+      terminationGracePeriodSeconds: 180
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gateway-secret
+  namespace: contract-app
+type: Opaque
+data:
+  JWT_SECRET_KEY: YzJWamNtVjBhMlY1
+

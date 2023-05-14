@@ -1,0 +1,121 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: contract-app
+  labels:
+    name: contract-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: account-svc
+  namespace: contract-app
+  labels:
+    app: account
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: account
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account
+  namespace: contract-app
+  labels:
+    app: account
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: account
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: account
+    spec:
+      containers:
+        - name: account
+          image: mnikolopoulou/account
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: LDAP_URL
+              value: "ldap://ldap-svc.default.svc.cluster.local:389"
+            - name: LDAP_SEARCH_BASE
+              value: "dc=uniwa,dc=gr"
+            - name: REDIS_HOST
+              value: "redis.default.svc.cluster.local"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: LDAP_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: LDAP_ADMIN_USERNAME
+                  name: account-secret
+            - name: LDAP_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: LDAP_ADMIN_PASSWORD
+                  name: account-secret
+            - name: REDIS_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_USERNAME
+                  name: account-secret
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: REDIS_PASSWORD
+                  name: account-secret
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 10
+            failureThreshold: 2
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            failureThreshold: 2
+            timeoutSeconds: 10
+            successThreshold: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 600Mi
+            requests:
+              cpu: 400m
+              memory: 500Mi
+      terminationGracePeriodSeconds: 180
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: account-secret
+  namespace: contract-app
+type: Opaque
+data:
+  LDAP_ADMIN_USERNAME: Y249YWRtaW4sZGM9dW5pd2EsZGM9Z3I=
+  LDAP_ADMIN_PASSWORD: YWRtaW4=
+  REDIS_USERNAME: ZGVmYXVsdA==
+  REDIS_PASSWORD: QWRtaW4xMjM0NQ==
+

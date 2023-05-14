@@ -1,0 +1,53 @@
+
+logging:
+  level:
+    web: debug
+
+spring:
+  datasource:
+    url: ${PG_DB_URL:jdbc:postgresql://localhost:30432/postgres}
+    username: ${PG_DB_USERNAME:postgres}
+    password: ${PG_DB_PASSWORD:Admin12345}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_SERVERS:http://localhost:9092}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+auto:
+  create:
+    topics:
+      enable: true
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: FULL
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+account-client:
+  url: ${ACCOUNT_URL:http://localhost:8080}

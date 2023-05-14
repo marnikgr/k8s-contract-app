@@ -1,0 +1,134 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ldap
+  name: ldap-svc
+spec:
+  type: NodePort
+  ports:
+    - port: 389
+      targetPort: 389
+      nodePort: 30389
+  selector:
+    app: ldap
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ldap
+  labels:
+    app: ldap
+spec:
+  selector:
+    matchLabels:
+      app: ldap
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ldap
+    spec:
+      containers:
+        - name: ldap
+          image: osixia/openldap:1.5.0
+          args:
+            - --copy-service
+            - --loglevel
+            - debug
+          volumeMounts:
+            - name: ldap-bootstrap-config
+              mountPath: /container/service/slapd/assets/config/bootstrap/ldif/bootstrap.ldif
+              subPath: bootstrap.ldif
+          ports:
+            - containerPort: 389
+              name: openldap
+          env:
+            - name: LDAP_LOG_LEVEL
+              value: "256"
+            - name: LDAP_ORGANISATION
+              value: Uniwa Org.
+            - name: LDAP_DOMAIN
+              value: uniwa.gr
+            - name: LDAP_BASE_DN
+              value: dc=uniwa,dc=gr
+            - name: LDAP_ADMIN_PASSWORD
+              value: "admin"
+      volumes:
+        - name: ldap-bootstrap-config
+          configMap:
+            name: ldap-bootstrap-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ldap-bootstrap-config
+data:
+  bootstrap.ldif: |
+    # -----------------------------------------
+    #   Create Organizational Units
+    # -----------------------------------------
+    
+    dn: ou=Users,dc=uniwa,dc=gr
+    changetype: add
+    objectclass: organizationalUnit
+    ou: Users
+    
+    dn: ou=Groups,dc=uniwa,dc=gr
+    changetype: add
+    objectclass: organizationalUnit
+    ou: Groups
+    
+    # -----------------------------------------
+    #   Create Users
+    # -----------------------------------------
+    
+    dn: cn=Applicant1,ou=Users,dc=uniwa,dc=gr
+    changetype: add
+    objectclass: inetOrgPerson
+    uid: U0
+    cn: Applicant1 CN
+    sn: Applicant1 SN
+    givenname: Applicant1
+    displayname: Applicant1
+    mail: applicant1@uniwa.gr
+    userpassword: applicant1pass
+    
+    dn: cn=Applicant2,ou=Users,dc=uniwa,dc=gr
+    changetype: add
+    objectclass: inetOrgPerson
+    uid: U1
+    cn: Applicant2 CN
+    sn: Applicant2 SN
+    givenname: Applicant2
+    displayname: Applicant2
+    mail: applicant2@uniwa.gr
+    userpassword: applicant2pass
+    
+    dn: cn=Approver1,ou=Users,dc=uniwa,dc=gr
+    changetype: add
+    objectclass: inetOrgPerson
+    uid: U2
+    cn: Approver CN
+    sn: Approver SN
+    givenname: Approver
+    displayname: Approver
+    mail: approver1@uniwa.gr
+    userpassword: approver1pass
+    
+    # -----------------------------------------
+    #   Create Groups
+    # -----------------------------------------
+    
+    dn: cn=Applicant,ou=Groups,dc=uniwa,dc=gr
+    changetype: add
+    cn: Applicant
+    objectclass: groupOfUniqueNames
+    uniqueMember: cn=Applicant1,dc=uniwa,dc=gr
+    uniqueMember: cn=Applicant2,dc=uniwa,dc=gr
+    
+    dn: cn=Approver,ou=Groups,dc=uniwa,dc=gr
+    changetype: add
+    cn: Approver
+    objectclass: groupOfUniqueNames
+    uniqueMember: cn=Approver1,dc=uniwa,dc=gr

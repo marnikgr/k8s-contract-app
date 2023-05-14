@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-svc
+  namespace: contract-app
+  labels:
+    app: notification
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: notification
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification
+  namespace: contract-app
+  labels:
+    app: notification
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: notification
+  template:
+    metadata:
+      labels:
+        app: notification
+    spec:
+      containers:
+        - name: notification
+          image: mnikolopoulou/notification
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: MAIL_HOST
+              value: "smtp.default.svc.cluster.local"
+            - name: MAIL_PORT
+              value: "1025"
+            - name: KAFKA_SERVERS
+              value: "http://kafka-svc.default.svc.cluster.local:9092"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 10
+            failureThreshold: 2
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            failureThreshold: 2
+            timeoutSeconds: 10
+            successThreshold: 1
+          resources:
+            limits:
+              cpu: 400m
+              memory: 500Mi
+            requests:
+              cpu: 400m
+              memory: 500Mi
+      terminationGracePeriodSeconds: 180
+
+

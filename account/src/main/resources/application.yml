@@ -1,0 +1,28 @@
+
+spring:
+  ldap:
+    urls: ${LDAP_URL:ldap://localhost:30389}
+    base: ${LDAP_SEARCH_BASE:dc=uniwa,dc=gr}
+    username: ${LDAP_ADMIN_USERNAME:cn=admin,dc=uniwa,dc=gr}
+    password: ${LDAP_ADMIN_PASSWORD:admin}
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:30379}
+    password: ${REDIS_PASSWORD:Admin12345}
+    username: ${REDIS_USERNAME:default}
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+

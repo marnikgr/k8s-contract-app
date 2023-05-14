@@ -1,0 +1,280 @@
+{
+	"info": {
+		"_postman_id": "f1852cc9-fc5c-479d-89df-f230ec768aae",
+		"name": "Contract API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1038702"
+	},
+	"item": [
+		{
+			"name": "account",
+			"item": [
+				{
+					"name": "/api/account/v1/auth",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"applicant1@uniwa.gr\",\r\n    \"password\": \"applicant1pass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:30090/api/account/v1/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30090",
+							"path": [
+								"api",
+								"account",
+								"v1",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/account/v1/get/{username}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcHBsaWNhbnQxQHVuaXdhLmdyIiwiZXhwIjoxNjgzOTI4MzU2LCJpYXQiOjE2ODM5MjExNTZ9.rgftWCeHmvyZPofxk_h9AMnIHrLvNRZiZqZ-LDKB0SPI1UnWVkn8CP6uOmAfUNLLnIgBZA7_WwY1cPq1TuLAnA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:30090/api/account/v1/get/applicant1@uniwa.gr",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30090",
+							"path": [
+								"api",
+								"account",
+								"v1",
+								"get",
+								"applicant1@uniwa.gr"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "application",
+			"item": [
+				{
+					"name": "/api/application/v1/user/{username}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcHBsaWNhbnQxQHVuaXdhLmdyIiwiZXhwIjoxNjgyOTEzMDM0LCJpYXQiOjE2ODI5MDU4MzR9.Csj52_KTowN2utaXiQFOLkD6y_0hTAQ2HOl3b8SyrREtDfMuJJRYJWAYuTxdSsUEGMwvunMcJw_EDvk4ZLAJTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:30090/api/application/v1/user/applicant1@uniwa.gr",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30090",
+							"path": [
+								"api",
+								"application",
+								"v1",
+								"user",
+								"applicant1@uniwa.gr"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/application/v1/{username}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcHBsaWNhbnQxQHVuaXdhLmdyIiwiZXhwIjoxNjg0MDI1MDk3LCJpYXQiOjE2ODQwMTc4OTd9.qVOF6TsiiobLvv6YhvlSs0BityNqAGxXzAobd_AD1MroVJtTUC8cypJ7tMXSVFGI_vsGTiIi0gPHu_HVJVvPBg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:30090/api/application/v1/applicant1@uniwa.gr",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30090",
+							"path": [
+								"api",
+								"application",
+								"v1",
+								"applicant1@uniwa.gr"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/application/v1/{id}/{status}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcHBsaWNhbnQxQHVuaXdhLmdyIiwiZXhwIjoxNjgzOTI4MzU2LCJpYXQiOjE2ODM5MjExNTZ9.rgftWCeHmvyZPofxk_h9AMnIHrLvNRZiZqZ-LDKB0SPI1UnWVkn8CP6uOmAfUNLLnIgBZA7_WwY1cPq1TuLAnA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:30090/api/application/v1/5/PROCESSED",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30090",
+							"path": [
+								"api",
+								"application",
+								"v1",
+								"5",
+								"PROCESSED"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/application/v1/{id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcHBsaWNhbnQxQHVuaXdhLmdyIiwiZXhwIjoxNjgzOTI4MzU2LCJpYXQiOjE2ODM5MjExNTZ9.rgftWCeHmvyZPofxk_h9AMnIHrLvNRZiZqZ-LDKB0SPI1UnWVkn8CP6uOmAfUNLLnIgBZA7_WwY1cPq1TuLAnA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:30090/api/application/v1/5/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30090",
+							"path": [
+								"api",
+								"application",
+								"v1",
+								"5",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/application/v1/user/{username}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcHBsaWNhbnQxQHVuaXdhLmdyIiwiZXhwIjoxNjg0MDI1MDk3LCJpYXQiOjE2ODQwMTc4OTd9.qVOF6TsiiobLvv6YhvlSs0BityNqAGxXzAobd_AD1MroVJtTUC8cypJ7tMXSVFGI_vsGTiIi0gPHu_HVJVvPBg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:30090/api/application/v1/user/applicant1@uniwa.gr",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30090",
+							"path": [
+								"api",
+								"application",
+								"v1",
+								"user",
+								"applicant1@uniwa.gr"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/application/v1/user/{username}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcHBsaWNhbnQxQHVuaXdhLmdyIiwiZXhwIjoxNjg0MDI0Nzg1LCJpYXQiOjE2ODQwMTc1ODV9.pNjt9ykX2dgeMQx61Iw7PsXAcgSCzB_pYroxhO2XXP8EqsscWNYeECFeYw9DyBEjYjRX9yCFj0fHpuZlUZWbgg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:30090/api/application/v1/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "30090",
+							"path": [
+								"api",
+								"application",
+								"v1",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

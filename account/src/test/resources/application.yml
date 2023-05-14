@@ -1,0 +1,17 @@
+spring:
+  redis:
+    host: localhost
+    port: 6379
+  ldap:
+    embedded:
+      ldif: classpath:test-server.ldif
+      base-dn: dc=test,dc=gr
+      port: 8389
+      credential:
+        username: uid=admin
+        password: secret
+      validation:
+        enabled: false
+    urls: ldap://localhost:8389/
+    username: uid=admin
+    password: secret

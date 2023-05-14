@@ -1,0 +1,65 @@
+
+logging:
+  level:
+    reactor:
+      netty: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
+    web: debug
+
+spring:
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      excludedUrls: /account/v1/auth, actuator
+      httpclient:
+        wiretap: true
+      httpserver:
+        wiretap: true
+      routes:
+        - id: account
+          uri: ${ACCOUNT_URL:http://localhost:8080}
+          predicates:
+            - Path=/api/account/v1/**
+          filters:
+            - AuthenticationFilter
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+        - id: application
+          uri: ${APPLICATION_URL:http://localhost:8081}
+          predicates:
+            - Path=/api/application/v1/**
+          filters:
+            - AuthenticationFilter
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: FULL
+
+jwt:
+  secret: ${JWT_SECRET_KEY:c2VjcmV0a2V5}
+  validHours: 2
+
+account-client:
+  url: ${ACCOUNT_URL:http://localhost:8080}
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    export:
+      prometheus:
+        enabled: true

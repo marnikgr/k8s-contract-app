@@ -1,0 +1,100 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: application-svc
+  namespace: contract-app
+  labels:
+    app: application
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: application
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application
+  namespace: contract-app
+  labels:
+    app: application
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: application
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: application
+    spec:
+      containers:
+        - name: application
+          image: mnikolopoulou/application
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: PG_DB_URL
+              value: "jdbc:postgresql://postgres.default.svc.cluster.local:5432/postgres"
+            - name: KAFKA_SERVERS
+              value: "http://kafka-svc.default.svc.cluster.local:9092"
+            - name: ACCOUNT_URL
+              value: "http://account-svc.contract-app.svc.cluster.local"
+            - name: PG_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: PG_DB_USERNAME
+                  name: application-secret
+            - name: PG_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: PG_DB_PASSWORD
+                  name: application-secret
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 10
+            failureThreshold: 2
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            failureThreshold: 2
+            timeoutSeconds: 10
+            successThreshold: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 600Mi
+            requests:
+              cpu: 400m
+              memory: 500Mi
+      terminationGracePeriodSeconds: 180
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: application-secret
+  namespace: contract-app
+type: Opaque
+data:
+  PG_DB_USERNAME: cG9zdGdyZXM=
+  PG_DB_PASSWORD: QWRtaW4xMjM0NQ==
+

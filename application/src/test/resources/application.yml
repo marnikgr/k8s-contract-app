@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: h2
+  kafka:
+    producer:
+      bootstrap-servers: ${spring.embedded.kafka.brokers}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+
+account-client:
+  url: http://localhost:8080

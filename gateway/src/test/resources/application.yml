@@ -1,0 +1,40 @@
+
+spring:
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      excludedUrls: /account/v1/auth, actuator
+      httpclient:
+        wiretap: true
+      httpserver:
+        wiretap: true
+      routes:
+        - id: account
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/account/v1/**
+          filters:
+            - AuthenticationFilter
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+        - id: application
+          uri: http://localhost:8081
+          predicates:
+            - Path=/application/v1/**
+          filters:
+            - AuthenticationFilter
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+        - id: notification
+          uri: http://localhost:8082
+          predicates:
+            - Path=/notification/v1/**
+          filters:
+            - AuthenticationFilter
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+
+jwt:
+  secret: c2VjcmV0a2V5
+  validHours: 2
+
+account-client:
+  url: http://localhost:8080
