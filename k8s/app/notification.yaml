@@ -76,10 +76,37 @@ spec:
           resources:
             limits:
               cpu: 400m
-              memory: 500Mi
+              memory: 300Mi
             requests:
-              cpu: 400m
-              memory: 500Mi
-      terminationGracePeriodSeconds: 180
+              cpu: 200m
+              memory: 200Mi
+      terminationGracePeriodSeconds: 60
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: notification-hpa
+  labels:
+    app: notification
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: notification
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 75
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 100
 
 
