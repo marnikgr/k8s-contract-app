@@ -24,8 +24,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./account
-          file: ./account/Dockerfile
+          context: .
+          file: account/Dockerfile
           push: true
           tags: mnikolopoulou/account:${{ github.sha }}
 
