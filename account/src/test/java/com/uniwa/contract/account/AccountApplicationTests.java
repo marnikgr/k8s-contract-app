@@ -29,7 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 class AccountApplicationTests {
 
-
 	MockMvc mockMvc;
 
 	@Autowired
