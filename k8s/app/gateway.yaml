@@ -73,17 +73,17 @@ spec:
               path: /actuator/health/readiness
               port: 8080
               scheme: HTTP
-            initialDelaySeconds: 30
+            initialDelaySeconds: 50
             failureThreshold: 2
             timeoutSeconds: 10
             successThreshold: 1
           resources:
             limits:
-              cpu: 300m
-              memory: 400Mi
+              cpu: 500m
+              memory: 500Mi
             requests:
-              cpu: 200m
-              memory: 250Mi
+              cpu: 400m
+              memory: 400Mi
       terminationGracePeriodSeconds: 180
 ---
 apiVersion: v1
@@ -99,6 +99,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: gateway-hpa
+  namespace: contract-app
   labels:
     app: gateway
 spec:
@@ -107,7 +108,7 @@ spec:
     kind: Deployment
     name: gateway
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 3
   metrics:
     - type: Resource
       resource:
@@ -115,11 +116,11 @@ spec:
         target:
           type: Utilization
           averageUtilization: 75
-    - type: Resource
-      resource:
-        name: memory
-        target:
-          type: Utilization
-          averageUtilization: 100
+#    - type: Resource
+#      resource:
+#        name: memory
+#        target:
+#          type: Utilization
+#          averageUtilization: 100
 
 

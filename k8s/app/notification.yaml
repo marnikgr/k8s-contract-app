@@ -78,7 +78,7 @@ spec:
               cpu: 400m
               memory: 300Mi
             requests:
-              cpu: 200m
+              cpu: 300m
               memory: 200Mi
       terminationGracePeriodSeconds: 60
 ---
@@ -86,6 +86,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: notification-hpa
+  namespace: contract-app
   labels:
     app: notification
 spec:
@@ -94,7 +95,7 @@ spec:
     kind: Deployment
     name: notification
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 2
   metrics:
     - type: Resource
       resource:
@@ -102,11 +103,11 @@ spec:
         target:
           type: Utilization
           averageUtilization: 75
-    - type: Resource
-      resource:
-        name: memory
-        target:
-          type: Utilization
-          averageUtilization: 100
+#    - type: Resource
+#      resource:
+#        name: memory
+#        target:
+#          type: Utilization
+#          averageUtilization: 100
 
 

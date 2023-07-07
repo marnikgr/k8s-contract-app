@@ -104,11 +104,11 @@ spec:
             successThreshold: 1
           resources:
             limits:
-              cpu: 300m
+              cpu: 400m
               memory: 400Mi
             requests:
-              cpu: 200m
-              memory: 250Mi
+              cpu: 300m
+              memory: 200Mi
       terminationGracePeriodSeconds: 60
 ---
 apiVersion: v1
@@ -127,6 +127,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: account-hpa
+  namespace: contract-app
   labels:
     app: account
 spec:
@@ -135,7 +136,7 @@ spec:
     kind: Deployment
     name: account
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 2
   metrics:
     - type: Resource
       resource:
@@ -143,10 +144,10 @@ spec:
         target:
           type: Utilization
           averageUtilization: 75
-    - type: Resource
-      resource:
-        name: memory
-        target:
-          type: Utilization
-          averageUtilization: 100
+#    - type: Resource
+#      resource:
+#        name: memory
+#        target:
+#          type: Utilization
+#          averageUtilization: 100
 
