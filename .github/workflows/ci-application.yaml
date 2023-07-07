@@ -6,6 +6,7 @@ on:
       - 'master'
     paths:
       - 'application/**'
+      -  '.github/workflows/**'
 
 jobs:
   build:
@@ -25,7 +26,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./application
-          file: Dockerfile
+          file: application/Dockerfile
           push: true
           tags: mnikolopoulou/application:${{ github.sha }}
 

@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - 'master'
-#    paths:
-#      - 'account/**'
+    paths:
+      - 'account/**'
 
 jobs:
   build:
