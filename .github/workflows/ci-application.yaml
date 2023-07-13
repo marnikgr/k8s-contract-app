@@ -41,10 +41,10 @@ jobs:
       CI_COMMIT_AUTHOR: GitHub Actions
       CI_COMMIT_EMAIL: ci@github.com
     steps:
+      - uses: actions/checkout@v2
       - run: |
           git config --global user.email "${{ env.CI_COMMIT_EMAIL }}" && git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
           echo "updating image tag in application.yaml file"
-          pwd
           sed -i 's,mnikolopoulou/application,mnikolopoulou/application:${{ github.sha }},' k8s/app/application.yaml
           git add . && git commit -m "${{ env.CI_COMMIT_MESSAGE }}"
           git push
