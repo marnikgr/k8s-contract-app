@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: contract-app
+  namespace: argocd
+spec:
+  destination:
+    namespace: contract-app
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: k8s/app
+    repoURL: https://github.com/marnikgr/k8s-contract-app.git
+    targetRevision: HEAD
+#    directory:
+#      include: application.yaml
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      selfHeal: true
+      prune: true
