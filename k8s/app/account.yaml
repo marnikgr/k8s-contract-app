@@ -49,7 +49,7 @@ spec:
     spec:
       containers:
         - name: account
-          image: mnikolopoulou/account
+          image: mnikolopoulou/account:13d58ebe8a6d7aedb1ac60ebff3fcb3aa2612f0d
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
