@@ -15,7 +15,7 @@ jobs:
     steps:
       # Git code checkout
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Docker Login to Docker registry
       - name: Log in to Docker Hub
@@ -40,8 +40,10 @@ jobs:
       CI_COMMIT_MESSAGE: Update image tag
       CI_COMMIT_AUTHOR: GitHub Actions
       CI_COMMIT_EMAIL: ci@github.com
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: |
           git config --global user.email "${{ env.CI_COMMIT_EMAIL }}" && git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
           echo "updating image tag in application.yaml file"
