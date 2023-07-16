@@ -12,8 +12,6 @@ spec:
     path: k8s/app
     repoURL: https://github.com/marnikgr/k8s-contract-app.git
     targetRevision: HEAD
-#    directory:
-#      include: application.yaml
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
