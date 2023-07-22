@@ -85,10 +85,10 @@ spec:
             successThreshold: 1
           resources:
             limits:
-              cpu: 500m
+              cpu: 600m
               memory: 500Mi
             requests:
-              cpu: 400m
+              cpu: 500m
               memory: 400Mi
       terminationGracePeriodSeconds: 180
 ---
