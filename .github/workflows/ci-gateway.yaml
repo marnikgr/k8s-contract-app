@@ -39,7 +39,7 @@ jobs:
         with:
           context: ./gateway
           platforms: linux/arm64/v8
-          file: Dockerfile
+          file: gateway/Dockerfile
           push: true
           tags: mnikolopoulou/gateway:${{ github.sha }}
 

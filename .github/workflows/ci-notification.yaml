@@ -39,7 +39,7 @@ jobs:
         with:
           context: ./notification
           platforms: linux/arm64/v8
-          file: Dockerfile
+          file: notification/Dockerfile
           push: true
           tags: mnikolopoulou/notification:${{ github.sha }}
   # Deploy Stage
