@@ -42,6 +42,7 @@ jobs:
           file: Dockerfile
           push: true
           tags: mnikolopoulou/gateway:${{ github.sha }}
+
   # Deploy Stage
   deploy:
     runs-on: ubuntu-latest
