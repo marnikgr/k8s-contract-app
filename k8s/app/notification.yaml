@@ -42,7 +42,7 @@ spec:
     spec:
       containers:
         - name: notification
-          image: mnikolopoulou/notification
+          image: mnikolopoulou/notification:6a074cb58076adfd132dc111767382ada159fc1d
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
