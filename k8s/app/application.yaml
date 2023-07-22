@@ -42,7 +42,7 @@ spec:
     spec:
       containers:
         - name: application
-          image: mnikolopoulou/application:7f187bf7a00228aa9c187502070cdddd93c954ca
+          image: mnikolopoulou/application:700f27e7df3cec221d325bb46cecd552c0e0de3b
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
