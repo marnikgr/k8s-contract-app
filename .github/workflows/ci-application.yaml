@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: arm64
+          ref: 'arm64'
 
       # Docker Login to Docker registry
       - name: Log in to Docker Hub
