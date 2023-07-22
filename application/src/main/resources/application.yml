@@ -17,8 +17,8 @@ spring:
       ddl-auto: update
     show-sql: true
   kafka:
+    bootstrap-servers: ${KAFKA_SERVERS:http://localhost:9092}
     producer:
-      bootstrap-servers: ${KAFKA_SERVERS:http://localhost:9092}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
