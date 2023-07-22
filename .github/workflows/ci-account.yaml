@@ -6,7 +6,7 @@ on:
       - 'arm64'
     paths:
       - 'account/**'
-      - '.github/workflows/**'
+#      - '.github/workflows/**'
 
 jobs:
   # Build Stage

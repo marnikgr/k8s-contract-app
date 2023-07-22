@@ -6,7 +6,7 @@ on:
       - 'arm64'
     paths:
       - 'application/**'
-      - '.github/workflows/**'
+#      - '.github/workflows/**'
 
 jobs:
   build:
