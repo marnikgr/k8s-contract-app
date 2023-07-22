@@ -11,7 +11,7 @@ spec:
   source:
     path: k8s/app
     repoURL: https://github.com/marnikgr/k8s-contract-app.git
-    targetRevision: HEAD
+    targetRevision: arm64
   syncPolicy:
     syncOptions:
       - CreateNamespace=true

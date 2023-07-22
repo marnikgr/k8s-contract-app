@@ -29,7 +29,7 @@ spec:
         app: zookeeper
     spec:
       containers:
-        - image: digitalwonderland/zookeeper:latest
+        - image: bitnami/zookeeper:latest
           name: zookeeper
           ports:
             - containerPort: 2181
