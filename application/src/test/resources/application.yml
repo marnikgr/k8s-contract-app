@@ -10,7 +10,6 @@ spring:
     database: h2
   kafka:
     producer:
-      bootstrap-servers: ${spring.embedded.kafka.brokers}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
