@@ -7,7 +7,7 @@ logging:
       springframework:
         cloud:
           gateway: TRACE
-    web: debug
+#    web: debug
 
 spring:
   main:

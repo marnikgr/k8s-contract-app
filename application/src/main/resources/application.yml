@@ -1,7 +1,7 @@
 
-logging:
-  level:
-    web: debug
+#logging:
+#  level:
+#    web: debug
 
 spring:
   datasource:
