@@ -3,10 +3,10 @@ logging:
   level:
     reactor:
       netty: INFO
-    org:
-      springframework:
-        cloud:
-          gateway: TRACE
+#    org:
+#      springframework:
+#        cloud:
+#          gateway: TRACE
 #    web: debug
 
 spring:
