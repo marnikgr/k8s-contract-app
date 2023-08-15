@@ -43,7 +43,7 @@ spec:
     spec:
       containers:
         - name: gateway
-          image: mnikolopoulou/gateway:6a074cb58076adfd132dc111767382ada159fc1d
+          image: mnikolopoulou/gateway:3d8e6dfc1e0c072f4b1dc799bdc06275c0be961f
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
